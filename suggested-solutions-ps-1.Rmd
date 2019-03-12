@@ -75,6 +75,9 @@ catch_up = flights %>% filter(dep_delay >= 60 & arr_delay <= dep_delay - 30)
 
 # 1.7 departed between midnight and 6AM, inclusive
 night_departures = flights %>% filter(dep_time %in% 0:600)
+
+# clean up
+rm(late_but_on_time_departure, late_flights, to_Houston, catch_up, night_departures, summer_flights, selected_airlines)
 ```
 
 6. Do exercises 3-4 of section 5.3.1 of @Wickham2017.
@@ -111,6 +114,9 @@ ggplot(df, aes(x=air_time, y=naive_duration)) + geom_point()
 # -- arr_time and dep_time are not actually in comparable units 
 #   ** e.g. "630" - "530" should give 60 m, not 100
 # -- differences in time zones (arr_time, dep_time are in local time)
+
+# clean up
+rm(df)
 ```
 
 \hfill [5 points]
@@ -120,6 +126,48 @@ ggplot(df, aes(x=air_time, y=naive_duration)) + geom_point()
 8. Do exercise 6 of section 5.7.1 of @Wickham2017
 ```{r}
 
+# first, let's create a variable "relative duration" 
+# -- want this to be air_time relative to mean, by destination
+
+rm(tmp_df)
+tmp_df <- flights %>% group_by(dest) %>% mutate(
+  mean_duration = mean(air_time, na.rm=TRUE),
+  relative_duration = air_time/mean_duration,
+  n = sum(!is.na(air_time))
+  ) %>% arrange(year, month, day, dest)
+
+# then, we're going to rank flights by their relative duration, within a destination
+# and, pick the 10 (relatively) fastest flights
+# notice, I also throw out destinations with fewer than 1 flight/day (365 flights per yr)
+
+fast_flights <- tmp_df %>% mutate(
+  r = rank(relative_duration)
+  ) %>% filter(r <= 10) %>% arrange(dest, r) %>%
+    select(year, month, day, dep_time, dep_delay, arr_delay, origin, dest, distance, air_time, mean_duration, relative_duration, r, n)
+view(fast_flights)
+
+# Q: why is the number of rows in fast_flights not a multiple of 10?
+#  -- ties result in fractional ranks
+#  -- some destinations may have fewer than 10 flights 
+#   ** although not here because we have aggregated over all flights in the year!
+#   ** this would be relevant if we wanted to look for fast flights within a day
+
+# now, let's look for the flights which took a relatively long time in the air
+# for this exercise, I'm going to ignore the possibility of data entry errors from above
+
+slow_flights <- flights %>% 
+  group_by(dest) %>%
+  mutate(
+    fastest_time = min(air_time, na.rm = TRUE),
+    relative_time = air_time/fastest_time,
+    r = min_rank(desc(relative_time)),
+    n = sum(!is.na(air_time))
+  ) %>% filter(r <= 10) %>% arrange(dest, r) %>%
+    select(year, month, day, dep_time, dep_delay, arr_delay, origin, dest, distance, air_time, fastest_time, relative_time, r, n)
+view(slow_flights)
+
+# clean up
+rm(fast_flights, slow_flights)
 ```
 
 
@@ -127,10 +175,104 @@ ggplot(df, aes(x=air_time, y=naive_duration)) + geom_point()
 
 9. Do exercise 4 of section 5.6.7 of @Wickham2017
 
+```{r}
+
+# consider what we want: daily data on
+#  -- fraction of cancelled flights
+#  -- mean or median delay 
+
+new_df = flights %>% group_by(year, month, day) %>% summarise(
+  n_scheduled = n(),
+  n_cancelled = sum(is.na(dep_delay)|is.na(arr_delay)),
+  frac_cancelled = mean(is.na(dep_delay)|is.na(arr_delay)),
+  med_delay = median(dep_delay, na.rm = TRUE),
+  mean_delay = mean(dep_delay, na.rm = TRUE)
+)
+
+# some outliers (>50% of flights cancelled!) distort the vertical scale
+ggplot(data=new_df, mapping=aes(x=mean_delay, y=frac_cancelled)) + geom_point()
+
+# restrict to days when < 15% of flights are cancelled
+new_df %>% filter(frac_cancelled < 0.15) %>% ggplot(mapping=aes(x=mean_delay, y=frac_cancelled)) + geom_point()
+
+# seems like yes, more flights are cancelled when the average delay is longer
+# but, the variability in the fraction cancelled is also higher when delays are longer
+
+# what does the relationship look like when we use the median and not the mean?
+# notice that the median delay is always an integer - why?
+new_df %>% filter(frac_cancelled < 0.15) %>% ggplot(mapping=aes(x=med_delay, y=frac_cancelled)) + geom_point()
+
+# clean up
+rm(new_df)
+```
+
 \hfill [5 points]
 
 ## Reshaping Data
 
 10. Do exercise 2-4 of section 12.3.3 of @Wickham2017
+```{r}
+# 2. why does this code fail?
+# it fails because, for this command, R interprets integers as column positions
+
+# compare the following: 
+# [fails] 
+table4a %>% gather(1999,2000, key = "year", value = "cases")
+# [works] 
+table4a %>% gather("1999","2000", key = "year", value = "cases")
+# [works] 
+table4a %>% gather(2,3, key = "year", value = "cases")
+
+# now let's try renaming the columns to things which cannot be interpreted as integers
+table4a_alt <- table4a
+names(table4a_alt) <- c("country", "y1999", "y2000")
+# [works] 
+table4a_alt %>% gather(y1999,y2000, key = "year", value = "cases")
+# [works] 
+table4a_alt %>% gather("y1999" , "y2000", key = "year", value = "cases")
+
+# clean up
+rm(table4a_alt)
+```
+
+```{r}
+# 3. why does spreading this tribble (a small, hand-entered tibble) fail?
+people <- tribble(
+  ~name,             ~key,    ~value,
+  #-----------------|--------|------
+  "Phillip Woods",   "age",       45,
+  "Phillip Woods",   "height",   186,
+  "Phillip Woods",   "age",       50,
+  "Jessica Cordero", "age",       37,
+  "Jessica Cordero", "height",   156
+)
+
+# the problem is that we have two rows for "Phillip Woods" and "age"
+# so, the remaining column ("name") does not uniquely identify the observations
+# R helpfully suggests using the command `rowid_to_column` to generate a unique identifier
+rowid_to_column(people) %>% spread(key="key", value = "value")
+
+# clean up
+rm(people)
+```
+
+```{r}
+# 4. tidy the tibble below
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes",     NA,    10,
+  "no",      20,    12
+)
+
+# if we "gather", an observation is a pair (pregnancy, sex)
+preg %>% gather(male, female, key = "sex", value = "count")
+
+# seems harder to "spread" but might not be impossible
+
+# clean up
+rm(preg)
+```
+
+
 
 \hfill [$3 \times 5 = 15$ points]
