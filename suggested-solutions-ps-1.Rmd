@@ -138,7 +138,7 @@ tmp_df <- flights %>% group_by(dest) %>% mutate(
 
 # then, we're going to rank flights by their relative duration, within a destination
 # and, pick the 10 (relatively) fastest flights
-# notice, I also throw out destinations with fewer than 1 flight/day (365 flights per yr)
+
 
 fast_flights <- tmp_df %>% mutate(
   r = rank(relative_duration)
