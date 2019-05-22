@@ -24,8 +24,17 @@ $\downarrow$ X Y$\rightarrow$ & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & 
 \end{center}
 
 (a) Find the first two moments - the mean and variance - of the marginal distributions of $X$ and $Y$. Check that the identity $V[X] = E[X^2] - E[X]^2$ holds.
+
+**Answer:** We have $E[X] = 1.3$ and $E[Y] = 2.315$. We also have $E[X^2] = 2.3$, so $V[X] = 2.3 - 1.3^2 = 0.61$.
+
 (b) Confirm that $E[XY] = 3.19$. Use this in combination with your calculations in (a) above to find $\text{cov}(X,Y)$.
+
+**Answer:** We have $\text{cov}(X,Y) = 3.19 - 1.3 \times 2.315 = 0.1805$.
+
 (c) Find the conditional probability mass function $P(Y = y|X = x)$ and use it to calculate the conditional mean function $E[Y|X = x]$ for each possible realization of $X$.
+
+**Answer:**
+
 (d) Calculate $E[E[Y|X = x]]$. With respect to which distribution is the outer expectation taken? The inner expectation? What do you notice about your answer as compared to the means you calculated in (a) above?
 
 \hfill [3 + 2 + 3 + 2 = 10 pts]
@@ -66,8 +75,29 @@ where $\Phi$ is the standard normal CDF.
         f_X(x) & = & \left\lbrace\begin{array}{ll} \frac{x}{9} & \text{if } x \in [0,3] \\ \frac{6}{9} - \frac{x}{9} & \text{if } x \in (3, 6] \\ 0 & \text{otherwise}\end{array}\right.
         \end{eqnarray}
 
-    (a) Find the CDF of $X$, $F_X(x)$. Draw the density $f_X$ and the CDF $F_X$ on the same set of axes.
-    (b) Find the inverse CDF. (The inverse CDF is the function $x = G(p)$ such that $F_X(G(p)) = p$, i.e. given a probability $p$, $G$ returns the value $x$ such that $P(X \leq x) = p$.)
+(a) Find the CDF of $X$, $F_X(x)$. Draw the density $f_X$ and the CDF $F_X$ on the same set of axes.
+
+**Answer:** This is an exercise in integration. The CDF is
+
+$$
+F_X(x) = \left\{\begin{array}{ll} 0 & \text{ if } x < 0 \\ \frac{x^2}{18} & \text{ if } x \in [0,3] \\ -1 + \frac{6}{9}x - \frac{x^2}{18} & \text{ if } x \in (3, 6] \\ 1 & \text{ if } x > 6 \end{array}\right.
+$$
+
+(b) Find the inverse CDF. (The inverse CDF is the function $x = G(p)$ such that $F_X(G(p)) = p$, i.e. given a probability $p$, $G$ returns the value $x$ such that $P(X \leq x) = p$.)
+
+**Answer:** For $0 \leq p \leq 1/2$, $G(p) = \sqrt{18p}$ solves $F_X(G(p)) = p$. For $p \in (1/2, 1]$, setting
+
+$$
+p = -1 + \frac{6}{9}x - \frac{x^2}{18}
+$$
+
+and solving for $x$ leads to
+
+$$
+G(p) = 6 - \sqrt{36 - 18(1+p)} \text{ for $p \in (1/2, 1]$.}
+$$
+ 
+ (We take the positive root because otherwise we'd have $x(p) < 0$, which is inconsistent with the description of the density $f_X(x)$.)
  
  \hfill [5 + 5 = 10 points]
 
@@ -181,6 +211,53 @@ Included in this repository are six short texts. Read each one carefully, and, i
 For those claims you think are causal, comment on whether the authors present any evidence for their claim. If so, what might be some concerns or alternative interpretations of that evidence? If they do not present any evidence for their claims, what sort of information would you need to decide whether it was true or false?
 
 **Please note:** You are welcome to have any views you like about these topics, but I will deduct points for extraneous opinion. The point of this exercise is to read the texts carefully and critically, and to be able to recognize causal statements (including implicit ones). It is **not** to discuss the particular issues mentioned in the texts. 
+
+**Answer(s):**
+
+_Schussler EWC tweet_
+
+- This is a causal claim (although posed as a question).
+- The evidence presented is the aggregate time series of completed building construction. One obvious problem with the picture (taken in isolation) is that the series is very volatile anyway (e.g. look at the drop in mid-2009).
+- At these fairly high frequencies, it might have been better to look at building starts, i.e. the initiation of new construction. Some of the drop in completed building happening in the present might be because new construction slowed down some months or years ago.
+- The ideal experiment might have been to randomly assign expropriation risk to different but comparable populations.
+- Overall it's hard to tell whether Schussler's claim is true or not, at least given this evidence.
+
+_Ramakoa tweet_
+
+- The first statement about SA business' "instincts" is a value judgement.
+- The second statement might be causal, although it's unclear what the implied counterfactual is. If "capital systematically distorts labour pricing", we have to ask relative to what?
+  - An economy where there is no capital whatsoever?
+  - An economy with less capital per worker?
+  - Something else?
+- The author seems to be suggesting that firms have a lot of wage-setting power, although what the wage distribution could (and in the author's view "should") be isn't clear.
+- We could also ask whether "distortions" of the wage distribution always increase inequality. It could be that the "undistorted" wage distribution would be even more dispersed than the one we see in reality.
+
+_Landlessness tweet_ 
+
+- The first, second, and third statements are factual claims.
+- For the third statement, the "dop system" of paying farmworkers in the form of alcohol is certainly a well-known phenomenon, although I have never seen documentation of exactly how common it is.
+- There is an implicit causal claim that landlessness is the cause of high rates of FAS in the rural Western Cape, but no evidence is presented for it.
+  - We might ask whether it is land itself, or wealth more generally, that is the cause of high FAS rates. (I would guess that there are many poor communities in, e.g. Eastern Europe where alcoholism and FAS are common, but people own the land they work.)
+  - It's also possible to interpret "landlessness" more loosely, as a metonym for colonialism or even poverty.
+  
+_Minimum wage tweets_
+
+- Most of these claims are factual - either about aspects of the wage distribution or about the legal details of the proposed act.
+- There are also some value judgements, e.g. R20/hour is "not enough".
+- Most counterfactuals here can be interpreted "mechanically", i.e. they assume no behavioral response by workers or firms.
+- There is a causal claim implied by the statement "It is not feasible for wages to jump massively in one go." (Why not? What would happen?)
+- The final statement - that the aggregate effect of raising the national minimum wage would be to raise both the level of output and the rate of growth - is causal. The author gives no evidence for it, though.
+
+_Makgetla article_
+
+- There are some factual claims made about the distribution of income across different types of statistical units (individual persons, households, and firms).
+- There is a causal claim made that, if the size distribution of firms is right-skewed, then the managers and shareholders of the largest firms can make decisions that "largely shape the economy".
+  - This is vague because the author does not say in which respects these managers and shareholders can "shape the economy". For example, can they affect education levels or consumer debt levels?
+  - It is also unclear what is being assumed about the reactions of other firms or consumers and workers to these possible decisions. For example, could the managers and the shareholders of the largest firms unilaterally set wages for all workers?
+- The main problem with the causal claims in this article are that it is vague about what "power" is and how it can be exercised in practice, so it is hard to evaluate its claims.
+  - For example, the author mentions that some asset managers have very large portfolios. But these are liabilities to those asset managers!
+  - The author seems to be implying that asset managers are completely free to allocate them, which seems unlikely unless investors are completely passive.
+  - There may be other interpretations consistent with the author's words and with her intended meaning. 
 
 \hfill [$6 \times 10 = 60$ points]
 
