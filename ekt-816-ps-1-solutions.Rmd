@@ -33,9 +33,23 @@ $\downarrow$ X Y$\rightarrow$ & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & 
 
 (c) Find the conditional probability mass function $P(Y = y|X = x)$ and use it to calculate the conditional mean function $E[Y|X = x]$ for each possible realization of $X$.
 
-**Answer:**
+**Answer:** The conditional distribution of $Y|X$ is as follows
+
+|              | $Y = 1$ | $Y = 2$ | $Y = 3$ | $Y = 4$ |
+| :----------: | :-----: | :------:| :------:| :------:|
+| $X = 0$      | 0.5     | 0.25    | 0.125   | 0.125   |
+| $X = 1$      | 0.233   | 0.433   | 0.133   | 0.2     |
+| $X = 2$      | 0.2     | 0.2     | 0.5     | 0.1     |
+
+So, we have
+
+- $E[Y|X = 0] = 1.875$
+- $E[Y|X = 1] = 2.3$
+- $E[Y|X = 2] = 2.5$
 
 (d) Calculate $E[E[Y|X = x]]$. With respect to which distribution is the outer expectation taken? The inner expectation? What do you notice about your answer as compared to the means you calculated in (a) above?
+
+**Answer:** The outer expectation is taken with respect to the marginal distribution of $X$. The inner expectation is with respect to the conditional distribution $P(Y = y|X = x)$. You should notice that $E[E[Y|X = x]] = E[Y] = 2.315$; this is a consequence of the law of iterated expectations.
 
 \hfill [3 + 2 + 3 + 2 = 10 pts]
 
@@ -176,31 +190,31 @@ i.e when the sum of the autocovariances (of the measurement error $\varepsilon_t
 
 ## Filtering, Sorting, and Generating New Variables
 
-5. Do exercise 1 from section 5.2.4 of @Wickham2017.
+5. Do exercise 1 from section 5.2.4 of @Grolemund2017.
 
 \hfill [5 points]
 
-6. Do exercises 3-4 of section 5.3.1 of @Wickham2017.
+6. Do exercises 3-4 of section 5.3.1 of @Grolemund2017.
 
 \hfill [$2 \times 5 = 10$ points]
 
-7. Do exercise 2 of section 5.5.2 of @Wickham2017
+7. Do exercise 2 of section 5.5.2 of @Grolemund2017
 
 \hfill [5 points]
 
 ## Grouped Summaries and Filters
 
-8. Do exercise 6 of section 5.7.1 of @Wickham2017
+8. Do exercise 6 of section 5.7.1 of @Grolemund2017
 
 \hfill [5 points]
 
-9. Do exercise 4 of section 5.6.7 of @Wickham2017
+9. Do exercise 4 of section 5.6.7 of @Grolemund2017
 
 \hfill [5 points]
 
 ## Reshaping Data
 
-10. Do exercise 2-4 of section 12.3.3 of @Wickham2017
+10. Do exercise 2-4 of section 12.3.3 of @Grolemund2017
 
 \hfill [$3 \times 5 = 15$ points]
 
@@ -258,6 +272,18 @@ _Makgetla article_
   - For example, the author mentions that some asset managers have very large portfolios. But these are liabilities to those asset managers!
   - The author seems to be implying that asset managers are completely free to allocate them, which seems unlikely unless investors are completely passive.
   - There may be other interpretations consistent with the author's words and with her intended meaning. 
+
+_Vox luxury gyms article_
+
+- The first part of the article describes differences in exercise patterns and membership of fitness clubs by income. These are factual claims.
+- There is a causal innuendo (boutique fitness chains "play into" exercise inequality).
+  - The suggestion seems to be that these firms are exercising discretion by serving an affluent set of consumers, but they could choose to do otherwise.
+  - You often read newspaper articles along the same lines about how rich consumers buy healthier groceries than poor consumers, and high-end food shops don't locate in poor neighborhoods.
+  - There is an obvious reverse-causality story here: these firms locate in rich neighborhoods because that's where their customers are, and they don't locate in poor neighborhoods because it would not be profitable to do so. The authors do not entertain this possibility.
+- Then, the article claims that poor people on average have less access to public parks and other exercise facilities. This is a factual claim.
+- Whether this difference in access to public parks is a cause of different exercise patterns by income does not follow from this fact, although the article does seem to suggest so.
+  - Even if richer people have greater access (say by distance) to public parks, the starting observation of this article is that the rich are exercising in expensive _private_ gyms.
+  - We would want to know how much exercise rich people do in public parks compared to private gyms in order to see if their greater access to parks is the cause of their higher exercise levels.
 
 \hfill [$6 \times 10 = 60$ points]
 

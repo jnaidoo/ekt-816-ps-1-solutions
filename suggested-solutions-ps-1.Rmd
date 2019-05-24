@@ -28,7 +28,7 @@ The preview shows you a rendered HTML copy of the contents of the editor. Conseq
 
 ## Filtering, Sorting, and Generating New Variables
 
-5. Do exercise 1 from section 5.2.4 of @Wickham2017.
+5. Do exercise 1 from section 5.2.4 of @Grolemund2017.
 
 ```{r}
 library(tidyverse)
@@ -80,7 +80,7 @@ night_departures = flights %>% filter(dep_time %in% 0:600)
 rm(late_but_on_time_departure, late_flights, to_Houston, catch_up, night_departures, summer_flights, selected_airlines)
 ```
 
-6. Do exercises 3-4 of section 5.3.1 of @Wickham2017.
+6. Do exercises 3-4 of section 5.3.1 of @Grolemund2017.
 ```{r}
 
 # 3. sort flights to find the fastest flights
@@ -99,7 +99,7 @@ tail(arrange(flights,distance))
 ```
 
 
-7. Do exercise 2 of section 5.5.2 of @Wickham2017
+7. Do exercise 2 of section 5.5.2 of @Grolemund2017
 ```{r}
 df = transmute(flights,
   air_time,
@@ -123,7 +123,7 @@ rm(df)
 
 ## Grouped Summaries and Filters
 
-8. Do exercise 6 of section 5.7.1 of @Wickham2017
+8. Do exercise 6 of section 5.7.1 of @Grolemund2017
 ```{r}
 
 # first, let's create a variable "relative duration" 
@@ -173,7 +173,7 @@ rm(fast_flights, slow_flights)
 
 \hfill [5 points]
 
-9. Do exercise 4 of section 5.6.7 of @Wickham2017
+9. Do exercise 4 of section 5.6.7 of @Grolemund2017
 
 ```{r}
 
@@ -210,7 +210,7 @@ rm(new_df)
 
 ## Reshaping Data
 
-10. Do exercise 2-4 of section 12.3.3 of @Wickham2017
+10. Do exercise 2-4 of section 12.3.3 of @Grolemund2017
 ```{r}
 # 2. why does this code fail?
 # it fails because, for this command, R interprets integers as column positions
